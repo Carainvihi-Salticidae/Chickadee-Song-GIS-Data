@@ -1,0 +1,19 @@
+,Location,Song.Diversity,Note.Diversity,Total.Songs,Total.Notes,Max.Complexity,Bi.Com,Complexity.Level,Min.Complexity,Num.Close.Connections,Close.plus.med.con,Bi.Con,Num.short.paths.in,Closest.Site,Num.connections.w.3.or.less.con,num.con.w.more.3.con,percent.low.con,percent.high.con,med.connections.w.5.or.less.con,med.con.w.more.5.con,percent.low.con2,percent.high.con2,strongest.con.num
+Ross,North,1.84275034,1.81946904,19,9,5,1,High,,1,5,1,1,Martell,1,0,1,0,3,2,0.6,0.4,2
+Martell,North,1.210360762,1.090248536,15,7,5,1,High,,2,5,1,2,Ross,2,0,1,0,3,2,0.6,0.4,1
+Cates Clawson,North,0.087705016,0.070465825,2,4,4,1,Med,,1,3,0,0,Turkey Run,1,0,1,0,0,3,0,1,6
+Ferguson,North,1.337705344,0.188329755,5,2,2,0,Low,,0,1,0,0,Waser,0,0,0,,1,0,1,0,
+Whistler Hare,North,1.790984137,2.240148749,12,8,4,1,Med,,1,6,1,1,Crows Grove,1,0,1,0,4,2,0.666666667,0.333333333,1
+Walnut Fork,North,0.959481231,1.516574657,3,6,5,1,Low,,3,11,1,0,Turkey Run,0,3,,1,4,7,0.363636364,0.636363636,6
+McCloud,South,2.329439112,2.523317356,32,11,5,1,High,,1,6,1,1,Big Walnut,0,1,0,1,0,6,0,1,4
+Turkey Run,South,1.399544328,1.698241985,9,8,6,1,High,,6,10,1,3,Raccoon Lake,4,2,0.666666667,0.333333333,3,7,0.3,0.7,5
+Waser,North,0.778731865,0.608623237,4,4,4,1,Med,,2,4,0,2,Martell,2,0,1,0,4,0,1,0,2
+Big Walnut,South,1.594833463,1.915154456,12,8,4,1,Med,,4,7,1,1,McCloud,2,2,0.5,0.5,1,6,0.142857143,0.857142857,1
+Finley Woods,South,1.876469122,2.023384104,11,6,4,1,Med,,2,5,1,1,Fern Cliff,0,2,0,1,0,5,0,1,5
+Fern Cliff,South,0.78524768,0.336374755,3,4,4,1,Med,,5,8,1,1,Finley Woods,2,3,0.4,0.6,2,6,0.25,0.75,2
+Raccoon Lake,South,0.292508468,0.292508468,2,4,4,1,Med,,5,9,1,2,Nelson Stokes,3,2,0.6,0.4,3,6,0.333333333,0.666666667,3
+Moyer Gould,North,,,,,3,0,Low,,1,2,0,1,Waser,1,0,1,0,2,0,1,0,2
+Stephens,North,,,,,3,0,Low,,0,2,0,0,Moyer Gould,0,0,,,2,0,1,0,
+Crows Grove,North,,,,,4,1,Med,,1,3,0,1,Whistler Hare,1,0,1,0,2,1,0.666666667,0.333333333,1
+Nelson Stokes,South,,,,,4,1,Med,,3,8,1,1,Raccoon Lake,0,3,0,1,2,6,0.25,0.75,5
+Nardi,South,,,,,3,0,Low,,2,4,0,1,Turkey Run,0,2,0,1,0,4,0,1,6
