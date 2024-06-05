@@ -1,0 +1,127 @@
+
+
+clearinfo
+
+
+! OPEN THE FILES TO BE ANALYZED FIRST
+! THEN OPEN THE 'empty' FILE
+
+! put the text file in the outfold$ folder
+outfold$="X:\Jonathan Song\Test\Full fee"
+
+! *********************************
+!  OUTPUT
+! *********************************
+
+
+
+! name all the files
+select all
+nSounds = numberOfSelected ("Sound")
+for i to nSounds
+  sound'i' = selected ("Sound", i)
+endfor
+
+! sort through all but the last (empty) file
+for i from 1 to nSounds-1
+
+    select sound'i'
+    soundname$ = selected$("Sound", 1)
+! information from the file name
+    site$=left$(soundname$,4)
+    date$=mid$(soundname$,6,6)
+    syntaxx$=mid$(soundname$,13,6)
+    infox$=mid$(soundname$,20,6)
+    xcut1$=mid$(soundname$,29,2)
+    xcut2$=mid$(soundname$,34,2)
+    cut1=number(xcut1$)/100.0
+    cut2=number(xcut2$)/100.0
+
+    printline 'soundname$' 'site$' 'date$' 'syntaxx$' 'infox$' 'cut1' 'cut2'
+
+
+
+     b$ = "fee1"
+     c$ = soundname$
+     fee1$ = c$+ b$
+     b$ = "fee2"
+     fee2$ = c$ + b$
+
+    printline 'soundname$' 'spec$' 'date$' 'syntax$' 'cut1' 'cut2' 'fee1$' 'fee2$'
+
+
+###  FIRST PART OF FEE NOTE ###
+    select sound'i'
+    Copy... 'fee1$'
+    mx = Get end time
+    xsound$ = selected$("Sound", 1)
+
+    printline 'soundname$' 'xsound$' 'cut1' 'cut2' 'mx'
+
+
+   Edit
+      editor Sound 'xsound$'
+### THIS MAKES A SOUND FILE FOR EACH SONG
+###  cut from first landmark to end of song
+       Select... cut2 mx
+       Cut
+      Close
+      Filter (pass Hann band): 2200, 12000, 100
+
+! get rid of the files we don't need -- keep the Sound chain file
+    zz$ = "Sound " + xsound$
+    selectObject: zz$
+    Remove
+
+
+###  SECOND PART OF FEE NOTE ###
+    select sound'i'
+    Copy... 'fee2$'
+    mx = Get end time
+
+    ysound$ = selected$("Sound", 1)
+   printline 'soundname$' 'ysound$' 'cut1' 'cut2' 'mx'
+
+   Edit
+      editor Sound 'ysound$'
+
+### THIS MAKES A SOUND FILE FOR EACH SONG
+###  cut from 0 to first landmark and second landmark to end of song
+
+       Select... cut2 mx
+       Cut
+       Select... 0 cut1
+       Cut
+     Close
+     Filter (pass Hann band): 2200, 12000, 100
+
+    zz$ = "Sound " + ysound$
+    selectObject: zz$
+    Remove
+
+
+
+
+
+
+! put the files in the outfold folder
+final1$=soundname$+"fee1_band"
+zz$ = "Sound " + final1$
+selectObject: zz$
+
+!outfold$="X:\Jonathan Song\Test\Full fee"
+part1$ = site$ + "_" + date$ + "_" 
+filename$ = outfold$ + part1$ + syntaxx$ + "_" + infox$ + "_" + "fee1.wav"
+Save as WAV file: filename$
+Remove
+
+
+final2$=soundname$+"fee2_band"
+zz$ = "Sound " + final2$
+selectObject: zz$
+filename$ = outfold$ + part1$ + syntaxx$ + "_" + infox$ + "_" + "fee2.wav"
+Save as WAV file: filename$
+Remove
+
+
+endfor

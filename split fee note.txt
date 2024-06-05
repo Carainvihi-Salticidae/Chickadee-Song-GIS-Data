@@ -1,0 +1,218 @@
+
+
+clearinfo
+# max length of the fee note #
+maxlen = 0.40
+
+! OPEN THE FILES TO BE ANALYZED FIRST
+! THEN OPEN THE 'empty' FILE
+
+! put the text file in the outfold$ folder
+outfold$="z:\jonathan\songs\AI test\split fee note\"
+
+! *********************************
+!  OUTPUT
+! *********************************
+
+
+
+! name all the files
+select all
+nSounds = numberOfSelected ("Sound")
+for i to nSounds
+  sound'i' = selected ("Sound", i)
+endfor
+
+! sort through all but the last (empty) file
+for i from 1 to nSounds-1
+
+    select sound'i'
+    soundname$ = selected$("Sound", 1)
+! information from the file name
+    site$=left$(soundname$,4)
+    date$=mid$(soundname$,6,6)
+    syntaxx$=mid$(soundname$,13,6)
+    infox$=mid$(soundname$,20,6)
+    xcut1$=mid$(soundname$,29,2)
+    xcut2$=mid$(soundname$,34,2)
+    cut1=number(xcut1$)/100.0
+    cut2=number(xcut2$)/100.0
+
+    printline 'soundname$' 'site$' 'date$' 'syntaxx$' 'infox$' 'cut1' 'cut2'
+
+! we want to add the empty file to the sound file
+! 'Concatenate' adds the second file to the first -- we need to do this twice to 
+!      add the empty sound to the beginning and to the end of the sound file
+!      but first we need to make both files have the same sample rate
+
+     b$ = "fee1"
+     c$ = soundname$
+     fee1$ = c$+ b$
+     b$ = "fee2"
+     fee2$ = c$ + b$
+
+    printline 'soundname$' 'spec$' 'date$' 'syntax$' 'cut1' 'cut2' 'fee1$' 'fee2$'
+
+
+###  FIRST PART OF FEE NOTE ###
+    select sound'i'
+    Copy... 'fee1$'
+    mx = Get end time
+    xsound$ = selected$("Sound", 1)
+
+    printline 'soundname$' 'xsound$' 'cut1' 'cut2' 'mx'
+
+
+   Edit
+      editor Sound 'xsound$'
+### THIS MAKES A SOUND FILE FOR EACH SONG
+###  cut from first landmark to end of song
+       Select... cut1 mx
+       Cut
+      Close
+      Filter (pass Hann band): 2200, 12000, 100
+
+! get rid of the files we don't need -- keep the Sound chain file
+    zz$ = "Sound " + xsound$
+    selectObject: zz$
+    Remove
+
+!      Concatenated file has a unique name (i.e. "chain")
+!  make a copy of the empty file so that it goes after the song (otherwise it will go first in the concatenated file
+    zz$ = "Sound " + "empty"
+    selectObject: zz$
+    Copy... 'empty1$'
+
+    zz$ = "Sound " + xsound$ + "_band"
+    selectObject: zz$
+    plusObject: "Sound _empty1__"
+    Resample: 44100, 50
+    Concatenate
+
+    b$ = "qfee1"
+    Copy...  'b$'
+
+! remove unneeded files
+    zz$ = "Sound " + "chain"
+    selectObject: zz$
+    Remove
+    zz$ = "Sound " + "_empty1___44100"
+    selectObject: zz$
+    Remove
+    zz$ = "Sound " + fee1$ + "_band"
+    selectObject: zz$
+    Remove
+    zz$ = "Sound " + fee1$ + "_band_44100"
+    selectObject: zz$
+    Remove
+    zz$ = "Sound " + "_empty1__"
+    selectObject: zz$
+    Remove
+
+
+
+###  SECOND PART OF FEE NOTE ###
+    select sound'i'
+    Copy... 'fee2$'
+    mx = Get end time
+
+    ysound$ = selected$("Sound", 1)
+   printline 'soundname$' 'ysound$' 'cut1' 'cut2' 'mx'
+
+   Edit
+      editor Sound 'ysound$'
+
+### THIS MAKES A SOUND FILE FOR EACH SONG
+###  cut from 0 to first landmark and second landmark to end of song
+
+       Select... cut2 mx
+       Cut
+       Select... 0 cut1
+       Cut
+     Close
+     Filter (pass Hann band): 2200, 12000, 100
+
+    zz$ = "Sound " + ysound$
+    selectObject: zz$
+    Remove
+
+    zz$ = "Sound " + "empty"
+    selectObject: zz$
+    Copy... 'empty1$'
+
+   zz$ = "Sound " + ysound$ + "_band"
+    selectObject: zz$
+    plusObject: "Sound _empty1__"
+    Resample: 44100, 50
+    Concatenate
+
+   w$ = "wfee2"
+   Copy...  'w$'
+
+    zz$ = "Sound " + "_empty1__"
+    selectObject: zz$
+    Remove
+    zz$ = "Sound " + fee2$ + "_band"
+    selectObject: zz$
+    Remove
+    zz$ = "Sound " + "_empty1___" + "44100"
+    selectObject: zz$
+    Remove
+    zz$ = "Sound " + "chain"
+    selectObject: zz$
+    Remove
+    zz$ = "Sound " + fee2$ + "_band_44100"
+    selectObject: zz$
+    Remove
+
+
+    zz$ = "Sound " + "qfee1"
+    selectObject: zz$
+    mx = Get end time
+
+    ysound$ = selected$("Sound", 1)
+    Edit
+      editor Sound 'ysound$'
+###  cut from max length of first half to end of song
+       Select... maxlen mx
+       Cut
+      Close
+
+
+! cut the files to the maximum length (maxlen)
+
+    zz$ = "Sound " + "wfee2"
+    selectObject: zz$
+    mx = Get end time
+
+    ysound$ = selected$("Sound", 1)
+    Edit
+      editor Sound 'ysound$'
+### THIS MAKES A SOUND FILE FOR EACH SONG
+###  cut from first landmark to end of song
+       Select... maxlen mx
+       Cut
+      Close
+
+! put the files in the outfold folder
+
+final1$=soundname$+"fee1"
+zz$ = "Sound " + "qfee1"
+selectObject: zz$
+Copy... 'final1$'
+
+!outfold$="z:\jonathan\songs\AI test\split fee note\"
+part1$ = site$ + "_" + date$ + "_" 
+filename$ = outfold$ + part1$ + syntaxx$ + "_" + infox$ + "_" + "fee1.wav"
+Save as WAV file: filename$
+
+
+final2$=soundname$+"fee2"
+zz$ = "Sound " + "wfee2"
+selectObject: zz$
+Copy... 'final2$'
+filename$ = outfold$ + part1$ + syntaxx$ + "_" + infox$ + "_" + "fee2.wav"
+Save as WAV file: filename$
+
+
+endfor

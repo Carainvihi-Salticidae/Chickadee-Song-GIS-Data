@@ -1,0 +1,59 @@
+
+
+
+! clearinfo
+sound1 = selected ("Sound",1)
+sound2 = selected ("Sound",2)
+sound3 = selected ("Sound",3)
+sound4 = selected ("Sound",4)
+
+for f from 1 to 4
+if f=1 
+  select sound1
+elsif f=2
+  select sound2
+elsif f=3
+  select sound3
+else
+  select sound4
+endif
+
+! pass band filter to get rid of low freq hum
+Filter (pass Hann band)... 1000 12000 50
+
+
+To Spectrum: "yes"
+To Ltas (1-to-1)
+fmx = Get frequency of maximum: 0, 0, "None"
+
+appendInfo: fmx, tab$ 
+
+if f=4
+   appendInfo: newline$
+endif
+
+select Sound untitled_band
+Remove
+select Spectrum untitled_band
+Remove
+select Ltas untitled_band
+Remove
+
+endfor 
+! for f
+
+
+for f from 1 to 4
+if f=1 
+  select sound1
+elsif f=2
+  select sound2
+elsif f=3
+  select sound3
+else
+  select sound4
+endif
+Remove
+
+endfor 
+! for f
