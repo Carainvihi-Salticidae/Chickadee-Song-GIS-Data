@@ -137,6 +137,20 @@ str(songdata)
 
 ###############################################################################################################################
 #
+#              PAM clustering (type of k-means clustering)
+#
+###############################################################################################################################
+
+
+fviz_nbclust(songdata.scaled, kmeans, method = "silhouette") #automatically determines number of clusters
+
+pam.result <- pam(songdata.scaled, 14)
+print(pam.result)
+
+fviz_cluster(pam.result,alldata.noNA, ellipse.type = "norm")
+
+###############################################################################################################################
+#
 #       Agglomerative Hierarchical Clustering
 #
 ###############################################################################################################################
