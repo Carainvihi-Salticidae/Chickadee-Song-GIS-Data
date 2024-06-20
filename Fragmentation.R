@@ -152,6 +152,38 @@ forest.res <- reclassify(dlm, res.matrix)
 forest.res
 plot(forest.res)
 
+
+sp.dlm <- rast(forest.res)
+
+sp.forest.res <- classify(sp.dlm, res.matrix)
+sp.forest.res
+plot(sp.forest.res)
+
+yf <- patches(sp.forest.res, zeroAsNA=TRUE)
+
+max(zf$patches)
+ff <-freq(yf)
+head(ff)
+
+zf = cellSize(yf,unit="km") |> zonal(yf, sum)
+head(zf) |> round(2)
+
+write.csv(zf, "C:/Users/jenki129/OneDrive - purdue.edu/GIS_Practice_Directory\\Patch Sizes - Forest Total.csv", row.names=FALSE)
+
+sp.forest.res
+
+plot(yf)
+cuts= c(0,20000,40000)
+pal <- c("blue","red")
+
+
+
+plot(yf,breaks=cuts,col=pal)
+points(sites, pch=16) #add sampling points
+text(x=sites$longitude, sites$latitude, sites$X, cex=0.6, pos=3, offset(0.5)) #name the ponits
+
+
+
 #####====  North ====#####
 
 #Chickadee sites
@@ -327,13 +359,14 @@ forest.complexity.s
 ######===== Compare ======#####
 library(ecolTest)
 
+div.data <- read.csv("North South diversity.csv", header = T) #import the data
+View(my.data)
+
+
 Hutcheson_t_test(
-  14.66,
-  26.83,
+  div.data$North,
+  div.data$South,
   shannon.base = exp(1),
   alternative = "two.sided",
   difference = 0
 )
-
-data("polychaeta_abundance")
-head(polychaeta_abundance)
